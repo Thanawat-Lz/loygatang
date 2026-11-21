@@ -1,0 +1,2228 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>คืนลอยกระทงของเรา — กล่อง & แก้ม</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&family=Noto+Serif+Thai:wght@400;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --color-sky-top: #0a0e1c;
+      --color-sky-mid: #1d1b32;
+      --color-sky-dusk: #3d2b45;
+      --color-sky-horizon: #70475e;
+      --color-sky-peach: #b36e78;
+      
+      --color-river-surface: #2b1f38;
+      --color-river-deep: #0e1220;
+      
+      --rose-gold: #d49a89;
+      --rose-gold-light: #e8b8a8;
+      --rose-gold-border: rgba(212, 154, 137, 0.45);
+      
+      --gold-candle: #ffd54f;
+      --gold-warm: #ffb300;
+      --gold-amber: #ff8f00;
+      
+      --font-serif: 'Noto Serif Thai', serif;
+      --font-sans: 'Prompt', sans-serif;
+      --font-display: 'Mitr', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: var(--font-sans);
+      background-color: var(--color-sky-top);
+      color: #fdf6ec;
+    }
+
+    #sceneContainer {
+      position: relative;
+      width: 100vw;
+      height: 100dvh;
+      overflow: hidden;
+      background: linear-gradient(to bottom, 
+        var(--color-sky-top) 0%, 
+        var(--color-sky-mid) 26%, 
+        var(--color-sky-dusk) 44%, 
+        var(--color-sky-horizon) 52%, 
+        var(--color-sky-peach) 56%,
+        var(--color-river-surface) 58%,
+        var(--color-river-deep) 100%
+      );
+    }
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: #ffffff;
+      pointer-events: none;
+      animation: starTwinkle 3.5s ease-in-out infinite alternate;
+    }
+    @keyframes starTwinkle {
+      0% { opacity: 0.2; transform: scale(0.8); }
+      100% { opacity: 0.95; transform: scale(1.2); }
+    }
+
+    #moonContainer {
+      position: absolute;
+      top: 7%;
+      right: 10%;
+      width: 112px;
+      height: 112px;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .full-moon {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 42% 40%, #fffbe6 0%, #fff3b0 45%, #ffd269 80%, #f6a623 100%);
+      box-shadow: 
+        0 0 40px rgba(255, 230, 150, 0.75),
+        0 0 90px rgba(255, 200, 100, 0.45),
+        0 0 160px rgba(255, 170, 70, 0.25);
+    }
+    .moon-crater {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(210, 160, 90, 0.16);
+      filter: blur(2px);
+    }
+    .crater-1 { width: 28px; height: 28px; top: 18px; left: 26px; }
+    .crater-2 { width: 40px; height: 40px; top: 42px; left: 46px; }
+    .crater-3 { width: 18px; height: 18px; top: 66px; left: 20px; }
+
+    #moonbeamReflection {
+      position: absolute;
+      bottom: 0;
+      right: 8%;
+      width: 150px;
+      height: 43%;
+      background: linear-gradient(to bottom, 
+        rgba(255, 230, 160, 0.28) 0%, 
+        rgba(255, 200, 100, 0.18) 40%, 
+        rgba(255, 180, 70, 0.05) 90%,
+        transparent 100%
+      );
+      filter: blur(12px);
+      pointer-events: none;
+      z-index: 3;
+      transform-origin: top center;
+      animation: moonbeamWaver 6s ease-in-out infinite alternate;
+    }
+    @keyframes moonbeamWaver {
+      0% { transform: scaleX(0.95) skewX(-1.5deg); opacity: 0.75; }
+      100% { transform: scaleX(1.1) skewX(1.5deg); opacity: 0.95; }
+    }
+
+    .twilight-cloud {
+      position: absolute;
+      background: linear-gradient(to right, transparent, rgba(235, 180, 195, 0.18), rgba(245, 210, 195, 0.25), transparent);
+      filter: blur(25px);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: cloudDrift 90s linear infinite;
+    }
+    @keyframes cloudDrift {
+      0% { transform: translateX(-25%); }
+      100% { transform: translateX(115%); }
+    }
+
+    .sky-lantern {
+      position: absolute;
+      width: 44px;
+      height: 60px;
+      pointer-events: none;
+      z-index: 3;
+      animation: lanternFloat 22s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      filter: drop-shadow(0 4px 14px rgba(255, 170, 50, 0.65));
+    }
+    .sky-lantern img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    @keyframes lanternFloat {
+      0% { transform: translateY(58vh) translateX(0) scale(0.65); opacity: 0; }
+      10% { opacity: 0.95; }
+      50% { transform: translateY(24vh) translateX(35px) scale(0.9); }
+      85% { opacity: 0.85; }
+      100% { transform: translateY(-120px) translateX(65px) scale(0.45); opacity: 0; }
+    }
+
+    #riverContainer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 43%;
+      border-top: 1px solid rgba(255, 224, 178, 0.22);
+      overflow: hidden;
+      z-index: 4;
+      pointer-events: none;
+    }
+    .water-shimmer-line {
+      position: absolute;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 230, 180, 0.45) 50%, transparent 100%);
+      border-radius: 2px;
+      pointer-events: none;
+      animation: shimmerFlow 7s ease-in-out infinite;
+    }
+    @keyframes shimmerFlow {
+      0% { transform: translateX(-40%) scaleX(0.8); opacity: 0.2; }
+      50% { transform: translateX(20%) scaleX(1.2); opacity: 0.8; }
+      100% { transform: translateX(80%) scaleX(0.7); opacity: 0.1; }
+    }
+
+    .floating-krathong {
+      position: absolute;
+      cursor: pointer;
+      transform-origin: center bottom;
+      transition: filter 0.3s ease;
+      touch-action: manipulation;
+    }
+    .floating-krathong:hover {
+      filter: brightness(1.12) drop-shadow(0 0 20px rgba(255, 215, 80, 0.7));
+      z-index: 25 !important;
+    }
+
+    .krathong-art-box {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      animation: krathongBob 4.8s ease-in-out infinite;
+    }
+    .krathong-art-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,0.55));
+    }
+
+    @keyframes krathongBob {
+      0% { transform: translateY(0px) rotate(-1.4deg); }
+      50% { transform: translateY(-7px) rotate(1.4deg); }
+      100% { transform: translateY(0px) rotate(-1.4deg); }
+    }
+
+    .candle-halo {
+      position: absolute;
+      top: 18%;
+      left: 50%;
+      width: 72px;
+      height: 72px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 240, 160, 0.8) 0%, rgba(255, 165, 30, 0.45) 45%, rgba(255, 100, 20, 0.15) 70%, transparent 100%);
+      filter: blur(6px);
+      pointer-events: none;
+      animation: candleBreathe 2.4s ease-in-out infinite alternate;
+    }
+    @keyframes candleBreathe {
+      0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.65; }
+      100% { transform: translate(-50%, -50%) scale(1.18); opacity: 0.95; }
+    }
+
+    .krathong-reflection {
+      position: absolute;
+      top: 78%;
+      left: 0;
+      width: 100%;
+      height: 55%;
+      transform: scaleY(-0.45);
+      filter: blur(3.5px) opacity(0.36);
+      pointer-events: none;
+      mask-image: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 80%);
+      -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 80%);
+      animation: reflectionRipple 3.6s ease-in-out infinite alternate;
+    }
+    .krathong-reflection img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    @keyframes reflectionRipple {
+      0% { transform: scaleY(-0.45) skewX(-2deg); opacity: 0.28; }
+      100% { transform: scaleY(-0.42) skewX(2deg); opacity: 0.44; }
+    }
+
+    .krathong-ripple-ring {
+      position: absolute;
+      bottom: 8%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      height: 24px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255, 215, 120, 0.48);
+      pointer-events: none;
+      animation: rippleExpand 3.8s cubic-bezier(0.2, 0.8, 0.4, 1) infinite;
+    }
+    .krathong-ripple-ring.r2 {
+      animation-delay: 1.9s;
+    }
+    @keyframes rippleExpand {
+      0% { transform: translateX(-50%) scale(0.6); opacity: 0.82; }
+      80% { opacity: 0.2; }
+      100% { transform: translateX(-50%) scale(2.2); opacity: 0; }
+    }
+
+    .krathong-sender-tag {
+      position: absolute;
+      bottom: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font-size: 11px;
+      font-weight: 500;
+      color: #fffdf9;
+      background: rgba(25, 18, 33, 0.84);
+      border: 1px solid var(--rose-gold-border);
+      padding: 2px 10px;
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      pointer-events: none;
+      letter-spacing: 0.3px;
+    }
+
+    #topHeader {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      z-index: 30;
+      pointer-events: auto;
+    }
+
+    .brand-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .brand-main-title {
+      font-family: var(--font-serif);
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #fffdf9;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .brand-names {
+      color: var(--rose-gold-light);
+      font-family: var(--font-display);
+      font-weight: 600;
+    }
+    .brand-subtitle {
+      font-size: 11.5px;
+      font-weight: 400;
+      color: rgba(255, 253, 249, 0.78);
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .special-badge {
+      display: inline-block;
+      padding: 1px 8px;
+      background: rgba(212, 154, 137, 0.22);
+      border: 1px solid var(--rose-gold-border);
+      border-radius: 12px;
+      font-size: 10.5px;
+      color: var(--rose-gold-light);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .audio-toggle-btn, .history-toggle-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(25, 18, 33, 0.68);
+      border: 1px solid var(--rose-gold-border);
+      color: #fffdf9;
+      padding: 7px 14px;
+      border-radius: 30px;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+    }
+    .audio-toggle-btn:hover, .history-toggle-btn:hover {
+      background: rgba(212, 154, 137, 0.28);
+      border-color: var(--rose-gold-light);
+      transform: translateY(-1px);
+    }
+    .audio-toggle-btn.playing {
+      border-color: var(--gold-candle);
+      box-shadow: 0 0 20px rgba(255, 213, 79, 0.35);
+    }
+
+    .sound-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2.5px;
+      height: 13px;
+    }
+    .sound-bar {
+      width: 2.5px;
+      background: var(--gold-candle);
+      border-radius: 2px;
+      height: 4px;
+      transition: height 0.2s ease;
+    }
+    .audio-toggle-btn.playing .sound-bar:nth-child(1) { animation: soundWave 0.7s infinite alternate ease-in-out; }
+    .audio-toggle-btn.playing .sound-bar:nth-child(2) { animation: soundWave 0.5s infinite alternate 0.15s ease-in-out; }
+    .audio-toggle-btn.playing .sound-bar:nth-child(3) { animation: soundWave 0.8s infinite alternate 0.3s ease-in-out; }
+    .audio-toggle-btn.playing .sound-bar:nth-child(4) { animation: soundWave 0.6s infinite alternate 0.1s ease-in-out; }
+    @keyframes soundWave {
+      0% { height: 3px; }
+      100% { height: 13px; }
+    }
+
+    #creatorCard {
+      position: absolute;
+      top: 52%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      width: 92%;
+      max-width: 430px;
+      max-height: calc(100dvh - 105px);
+      overflow-y: auto;
+      scrollbar-width: none;
+      background: rgba(24, 18, 33, 0.88);
+      border: 1px solid rgba(232, 184, 168, 0.35);
+      border-radius: 24px;
+      padding: 20px 22px;
+      backdrop-filter: blur(20px);
+      box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.65),
+        0 0 40px rgba(212, 154, 137, 0.15);
+      z-index: 40;
+      transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: auto;
+    }
+    #creatorCard::-webkit-scrollbar { display: none; }
+
+    #creatorCard.dismissed {
+      transform: translate(-50%, 60%) scale(0.85);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .creator-header {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .creator-title {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: 700;
+      color: #fffdf9;
+      letter-spacing: 0.4px;
+    }
+    .creator-desc {
+      font-size: 11.5px;
+      color: rgba(255, 253, 249, 0.72);
+      margin-top: 2px;
+    }
+
+    .preview-stage {
+      position: relative;
+      width: 100%;
+      height: 176px;
+      background: radial-gradient(circle at 50% 58%, rgba(255, 220, 145, 0.18) 0%, rgba(15, 10, 22, 0.84) 80%);
+      border: 1px solid rgba(212, 154, 137, 0.28);
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      box-shadow: inset 0 2px 20px rgba(0,0,0,0.5);
+    }
+    .preview-krathong-img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      filter: drop-shadow(0 12px 24px rgba(255, 180, 50, 0.45));
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: previewBreathe 4s ease-in-out infinite alternate;
+    }
+    @keyframes previewBreathe {
+      0% { transform: translateY(2px) scale(0.98); }
+      100% { transform: translateY(-4px) scale(1.02); }
+    }
+    .preview-candle-glow {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      width: 92px;
+      height: 92px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 235, 150, 0.8) 0%, rgba(255, 160, 20, 0.4) 40%, transparent 75%);
+      filter: blur(8px);
+      pointer-events: none;
+      animation: candleBreathe 2.4s ease-in-out infinite alternate;
+    }
+    .preview-badge-clarity {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+      font-size: 10px;
+      color: var(--rose-gold-light);
+      background: rgba(20, 15, 28, 0.78);
+      border: 1px solid rgba(212, 154, 137, 0.3);
+      padding: 2px 8px;
+      border-radius: 10px;
+      letter-spacing: 0.3px;
+    }
+
+    .style-selector-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .style-tab-btn {
+      background: rgba(35, 26, 48, 0.75);
+      border: 1px solid rgba(212, 154, 137, 0.25);
+      border-radius: 12px;
+      padding: 9px 6px;
+      color: rgba(255, 253, 249, 0.8);
+      font-size: 11.5px;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.25s ease;
+      text-align: center;
+    }
+    .style-tab-btn:hover {
+      background: rgba(55, 40, 72, 0.85);
+      border-color: var(--rose-gold-light);
+    }
+    .style-tab-btn.active {
+      background: linear-gradient(135deg, rgba(212, 154, 137, 0.28) 0%, rgba(65, 45, 85, 0.7) 100%);
+      border-color: var(--gold-candle);
+      color: #fffdf9;
+      font-weight: 500;
+      box-shadow: 0 4px 14px rgba(255, 213, 79, 0.22);
+    }
+    .tab-icon-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold-candle);
+      box-shadow: 0 0 6px var(--gold-candle);
+    }
+
+    .sender-group {
+      margin-bottom: 12px;
+    }
+    .sender-label {
+      font-size: 11.5px;
+      color: rgba(255, 253, 249, 0.8);
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .sender-selector {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .sender-btn {
+      background: rgba(35, 26, 48, 0.7);
+      border: 1px solid rgba(212, 154, 137, 0.25);
+      border-radius: 12px;
+      padding: 8px 8px;
+      color: rgba(255, 253, 249, 0.85);
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.25s ease;
+    }
+    .sender-btn.active {
+      background: linear-gradient(135deg, rgba(212, 154, 137, 0.35) 0%, rgba(85, 55, 105, 0.8) 100%);
+      border-color: var(--rose-gold-light);
+      color: #fffdf9;
+      box-shadow: 0 3px 12px rgba(212, 154, 137, 0.3);
+    }
+
+    .wish-input-group {
+      margin-bottom: 14px;
+    }
+    .wish-textarea {
+      width: 100%;
+      height: 68px;
+      background: rgba(18, 12, 26, 0.75);
+      border: 1px solid rgba(212, 154, 137, 0.3);
+      border-radius: 12px;
+      padding: 10px 14px;
+      color: #fffdf9;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.5;
+      resize: none;
+      outline: none;
+      transition: border-color 0.25s ease;
+    }
+    .wish-textarea:focus {
+      border-color: var(--gold-candle);
+      box-shadow: 0 0 14px rgba(255, 213, 79, 0.25);
+    }
+    .wish-textarea::placeholder {
+      color: rgba(255, 253, 249, 0.45);
+      font-size: 12px;
+    }
+
+    .preset-chips {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-top: 6px;
+      scrollbar-width: none;
+    }
+    .preset-chips::-webkit-scrollbar { display: none; }
+    .preset-chip {
+      white-space: nowrap;
+      background: rgba(45, 33, 60, 0.65);
+      border: 1px solid rgba(212, 154, 137, 0.2);
+      border-radius: 14px;
+      padding: 4px 10px;
+      font-size: 11px;
+      color: rgba(255, 253, 249, 0.78);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .preset-chip:hover {
+      background: rgba(212, 154, 137, 0.3);
+      color: #fffdf9;
+      border-color: var(--rose-gold-light);
+    }
+
+    .launch-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #d49a89 0%, #ffb300 50%, #f6a623 100%);
+      border: none;
+      border-radius: 14px;
+      padding: 12px 20px;
+      color: #1a0f26;
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 
+        0 8px 24px rgba(246, 166, 35, 0.4),
+        0 2px 6px rgba(0,0,0,0.3);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .launch-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        0 12px 30px rgba(246, 166, 35, 0.55),
+        0 0 20px rgba(255, 230, 150, 0.5);
+    }
+    .launch-btn:active { transform: translateY(1px); }
+
+    #reopenCreatorFab {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(26, 18, 36, 0.85);
+      border: 1.5px solid var(--rose-gold-light);
+      border-radius: 30px;
+      padding: 11px 22px;
+      color: #fffdf9;
+      font-family: var(--font-display);
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      box-shadow: 
+        0 10px 30px rgba(0,0,0,0.5),
+        0 0 20px rgba(212, 154, 137, 0.35);
+      z-index: 35;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: auto;
+    }
+    #reopenCreatorFab.visible { transform: translateX(-50%) translateY(0); }
+    #reopenCreatorFab:hover {
+      background: rgba(212, 154, 137, 0.3);
+      box-shadow: 
+        0 14px 36px rgba(0,0,0,0.6),
+        0 0 30px rgba(255, 213, 79, 0.45);
+      transform: translateX(-50%) translateY(-2px);
+    }
+
+    #toastNotification {
+      position: absolute;
+      top: 84px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      background: rgba(28, 19, 40, 0.92);
+      border: 1px solid var(--rose-gold-border);
+      border-radius: 20px;
+      padding: 9px 20px;
+      color: #fffdf9;
+      font-size: 12.5px;
+      white-space: nowrap;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #toastNotification.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    #messageModalBackdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 6, 18, 0.72);
+      backdrop-filter: blur(14px);
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    #messageModalBackdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #messageModalCard {
+      width: 90%;
+      max-width: 410px;
+      background: rgba(26, 18, 36, 0.94);
+      border: 1.5px solid rgba(232, 184, 168, 0.4);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 
+        0 24px 60px rgba(0,0,0,0.7),
+        0 0 50px rgba(212, 154, 137, 0.2);
+      transform: translateY(30px) scale(0.95);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    #messageModalBackdrop.open #messageModalCard {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(212, 154, 137, 0.3);
+      color: rgba(255, 253, 249, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s ease;
+    }
+    .modal-close-btn:hover {
+      background: rgba(212, 154, 137, 0.3);
+      color: #fffdf9;
+    }
+
+    .modal-krathong-display {
+      position: relative;
+      width: 100%;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    .modal-krathong-display img {
+      max-width: 88%;
+      max-height: 88%;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 22px rgba(255, 190, 60, 0.45));
+    }
+
+    .modal-sender-badge {
+      display: inline-block;
+      padding: 4px 14px;
+      background: rgba(212, 154, 137, 0.25);
+      border: 1px solid var(--rose-gold-border);
+      border-radius: 16px;
+      color: var(--rose-gold-light);
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .modal-date-text {
+      font-size: 11px;
+      color: rgba(255, 253, 249, 0.55);
+      margin-bottom: 14px;
+    }
+
+    .modal-wish-content {
+      background: rgba(14, 9, 20, 0.65);
+      border: 1px solid rgba(212, 154, 137, 0.2);
+      border-radius: 16px;
+      padding: 16px;
+      font-family: var(--font-serif);
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: #fffdf9;
+      text-align: center;
+      margin-bottom: 18px;
+      word-break: break-word;
+    }
+
+    .modal-actions-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .modal-reaction-btn {
+      background: rgba(45, 32, 58, 0.85);
+      border: 1px solid var(--rose-gold-border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      color: #fffdf9;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .modal-reaction-btn:hover {
+      background: rgba(212, 154, 137, 0.3);
+      border-color: var(--rose-gold-light);
+    }
+
+    .floating-sparkle-heart {
+      position: fixed;
+      pointer-events: none;
+      z-index: 70;
+      animation: floatSparkleHeart 2.4s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+    }
+    @keyframes floatSparkleHeart {
+      0% { transform: translateY(0) scale(0.6) rotate(0deg); opacity: 0.95; }
+      100% { transform: translateY(-150px) scale(1.3) rotate(15deg); opacity: 0; }
+    }
+
+    #archiveDrawer {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 380px;
+      height: 100%;
+      background: rgba(20, 14, 28, 0.96);
+      border-left: 1px solid rgba(212, 154, 137, 0.3);
+      backdrop-filter: blur(24px);
+      z-index: 55;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(105%);
+      transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #archiveDrawer.open {
+      transform: translateX(0);
+    }
+
+    .archive-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(212, 154, 137, 0.2);
+    }
+    .archive-title {
+      font-family: var(--font-serif);
+      font-size: 17px;
+      color: #fffdf9;
+    }
+    .archive-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .clear-all-btn {
+      background: rgba(255, 107, 129, 0.14);
+      border: 1px solid rgba(255, 107, 129, 0.38);
+      color: #ff9eb0;
+      border-radius: 10px;
+      padding: 5px 10px;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .clear-all-btn:hover:not(:disabled) {
+      background: rgba(255, 107, 129, 0.28);
+      color: #fffdf9;
+    }
+    .clear-all-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .archive-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-right: 4px;
+    }
+    .archive-empty {
+      text-align: center;
+      color: rgba(255, 253, 249, 0.55);
+      font-size: 13px;
+      padding: 40px 16px;
+      line-height: 1.7;
+    }
+    .archive-item {
+      background: rgba(35, 25, 48, 0.72);
+      border: 1px solid rgba(212, 154, 137, 0.22);
+      border-radius: 14px;
+      padding: 12px 14px;
+      transition: all 0.2s ease;
+    }
+    .archive-item:hover {
+      background: rgba(55, 40, 75, 0.85);
+      border-color: var(--rose-gold-light);
+    }
+    .archive-item-body {
+      cursor: pointer;
+    }
+    .archive-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .archive-item-sender {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--rose-gold-light);
+    }
+    .archive-item-time {
+      font-size: 10px;
+      color: rgba(255, 253, 249, 0.5);
+    }
+    .archive-item-text {
+      font-size: 12.5px;
+      color: #fffdf9;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .archive-item-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(255, 253, 249, 0.08);
+    }
+    .delete-wish-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 120, 140, 0.35);
+      color: #ff9eb0;
+      border-radius: 8px;
+      padding: 3px 10px;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .delete-wish-btn:hover {
+      background: rgba(255, 107, 129, 0.25);
+      color: #fffdf9;
+    }
+
+    .icon-svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    @media (max-width: 520px) {
+      .brand-main-title { font-size: 17px; }
+      #moonContainer { width: 84px; height: 84px; top: 11%; right: 6%; }
+      #creatorCard { top: 54%; padding: 16px 18px; }
+      .preview-stage { height: 148px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="sceneContainer">
+    <div id="starField"></div>
+
+    <div id="moonContainer">
+      <div class="full-moon">
+        <div class="moon-crater crater-1"></div>
+        <div class="moon-crater crater-2"></div>
+        <div class="moon-crater crater-3"></div>
+      </div>
+    </div>
+    <div id="moonbeamReflection"></div>
+
+    <div class="twilight-cloud" style="top: 32%; left: -10%; width: 520px; height: 140px;"></div>
+    <div class="twilight-cloud" style="top: 40%; left: 35%; width: 640px; height: 170px;"></div>
+
+    <div id="riverContainer">
+      <div class="water-shimmer-line" style="top: 15%; left: 5%; width: 220px;"></div>
+      <div class="water-shimmer-line" style="top: 32%; left: 35%; width: 340px; animation-delay: 2s;"></div>
+      <div class="water-shimmer-line" style="top: 55%; left: 15%; width: 280px; animation-delay: 4s;"></div>
+      <div class="water-shimmer-line" style="top: 72%; left: 60%; width: 260px; animation-delay: 1.2s;"></div>
+    </div>
+
+    <header id="topHeader">
+      <div class="brand-title-group">
+        <div class="brand-main-title">
+          <span>คืนลอยกระทงของเรา</span>
+          <span class="brand-names">กล่อง & แก้ม</span>
+        </div>
+        <div class="brand-subtitle">
+          <span>ความผูกพันวันที่ ๑๙</span>
+          <span class="special-badge">ร่วมลอยสว่างไสวไปด้วยกัน</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="audioToggleBtn" class="audio-toggle-btn" title="เปิด/ปิด เพลงลอยกระทงไทย">
+          <div class="sound-bars">
+            <div class="sound-bar"></div>
+            <div class="sound-bar"></div>
+            <div class="sound-bar"></div>
+            <div class="sound-bar"></div>
+          </div>
+          <span id="audioLabel">เปิดเพลงลอยกระทง</span>
+        </button>
+
+        <button id="historyToggleBtn" class="history-toggle-btn" title="ดูและจัดการความทรงจำของเรา">
+          <svg class="icon-svg" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <span>ความทรงจำ (<span id="wishCountBadge">0</span>)</span>
+        </button>
+      </div>
+    </header>
+
+    <div id="toastNotification">
+      <span>กระทงแห่งความรักของ กล่อง & แก้ม ลอยสู่สายน้ำแล้ว</span>
+    </div>
+
+    <div id="creatorCard">
+      <div class="creator-header">
+        <h2 class="creator-title">สร้างกระทงของเรา</h2>
+        <p class="creator-desc">เลือกแบบกระทงวิจิตรบรรจง และเขียนคำอธิษฐานถึงกัน</p>
+      </div>
+
+      <div class="preview-stage" id="previewStage">
+        <div class="preview-candle-glow"></div>
+        <img id="previewKrathongImg" class="preview-krathong-img" alt="ตัวอย่างกระทง">
+        <div class="preview-badge-clarity">งานฝีมือประณีตละเอียด</div>
+      </div>
+
+      <div class="style-selector-tabs">
+        <button type="button" class="style-tab-btn active" data-style="banana_leaf">
+          <div class="tab-icon-dot"></div>
+          <span>กลีบผกาใบตอง</span>
+        </button>
+        <button type="button" class="style-tab-btn" data-style="pink_lotus">
+          <div class="tab-icon-dot"></div>
+          <span>บัวหลวงชมพู</span>
+        </button>
+        <button type="button" class="style-tab-btn" data-style="golden_royal">
+          <div class="tab-icon-dot"></div>
+          <span>ประทีปทองคำ</span>
+        </button>
+      </div>
+
+      <div class="sender-group">
+        <div class="sender-label">
+          <span>ผู้ปล่อยกระทง</span>
+          <span style="color: var(--rose-gold-light); font-size: 11px;">ความผูกพันวันที่ ๑๙</span>
+        </div>
+        <div class="sender-selector">
+          <button type="button" class="sender-btn active" data-sender="กล่อง">
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <span>กล่อง</span>
+          </button>
+          <button type="button" class="sender-btn" data-sender="แก้ม">
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <span>แก้ม</span>
+          </button>
+          <button type="button" class="sender-btn" data-sender="แม่นาง">
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <span>แม่นาง</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="wish-input-group">
+        <div class="sender-label">
+          <span>คำอธิษฐาน & ข้อความถึงกัน</span>
+        </div>
+        <textarea id="wishInput" class="wish-textarea" placeholder="เขียนคำอธิษฐานหรือความรู้สึกดีๆ ในค่ำคืนนี้..."></textarea>
+        <div class="preset-chips">
+          <div class="preset-chip" data-text="ขอให้ความรักของเราสองคนสว่างไสวดั่งแสงเทียนในคืนเพ็ญ">สว่างไสวดั่งแสงเทียน</div>
+          <div class="preset-chip" data-text="ขอให้ทุกวันที่ 19 ของทุกเดือนเต็มไปด้วยรอยยิ้มและความสุขเสมอ">สุขใจทุกวันที่ ๑๙</div>
+          <div class="preset-chip" data-text="ขอบคุณที่อยู่เคียงข้างกัน จับมือกันข้ามผ่านทุกเรื่องราวนะ">จับมือกันตลอดไป</div>
+          <div class="preset-chip" data-text="ขอให้ความทุกข์ลอยไปกับสายน้ำ เหลือไว้แต่ความอบอุ่นใจของเรา">ลอยทุกข์โศกออกไป</div>
+        </div>
+      </div>
+
+      <button type="button" id="launchBtn" class="launch-btn">
+        <svg class="icon-svg" viewBox="0 0 24 24" style="fill: #1a0f26;">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+        </svg>
+        <span>ปล่อยกระทงลงน้ำ</span>
+      </button>
+    </div>
+
+    <button type="button" id="reopenCreatorFab">
+      <svg class="icon-svg" viewBox="0 0 24 24" style="fill: var(--gold-candle);">
+        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+      </svg>
+      <span>สร้างกระทงใหม่ / เขียนคำอธิษฐาน</span>
+    </button>
+
+    <div id="messageModalBackdrop">
+      <div id="messageModalCard">
+        <button type="button" id="modalCloseBtn" class="modal-close-btn" title="ปิด">×</button>
+        <div class="modal-krathong-display">
+          <div class="preview-candle-glow" style="width: 86px; height: 86px;"></div>
+          <img id="modalKrathongImg" alt="กระทง">
+        </div>
+        <div style="text-align: center;">
+          <div id="modalSenderBadge" class="modal-sender-badge">จาก กล่อง</div>
+          <div id="modalDateText" class="modal-date-text">คืนลอยกระทงของเรา</div>
+        </div>
+        <div id="modalWishContent" class="modal-wish-content"></div>
+        <div class="modal-actions-row">
+          <button type="button" id="sendLoveReactionBtn" class="modal-reaction-btn">
+            <svg class="icon-svg" viewBox="0 0 24 24" style="fill: #ff6b81;">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            <span>ส่งประกายรักให้</span>
+          </button>
+          <button type="button" id="closeModalActionBtn" class="modal-reaction-btn">
+            <span>ร่วมชื่นชมความงดงาม</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="archiveDrawer">
+      <div class="archive-header">
+        <h3 class="archive-title">ความทรงจำริมสายน้ำ</h3>
+        <div class="archive-header-actions">
+          <button type="button" id="clearAllWishesBtn" class="clear-all-btn" title="ลบความทรงจำทั้งหมด">ล้างทั้งหมด</button>
+          <button type="button" id="archiveCloseBtn" class="modal-close-btn" style="position: static;">×</button>
+        </div>
+      </div>
+      <div id="archiveList" class="archive-list"></div>
+    </div>
+
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAnalytics, isSupported } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+    import { getDatabase, ref, set, remove, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCh8f8xR9D_Bnpb18vH9XXCt1Cnc4HYv5o",
+      authDomain: "app-personal-47723.firebaseapp.com",
+      databaseURL: "https://app-personal-47723-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "app-personal-47723",
+      storageBucket: "app-personal-47723.firebasestorage.app",
+      messagingSenderId: "406447934094",
+      appId: "1:406447934094:web:03ca771674fe96414ad7df",
+      measurementId: "G-WNMJ01DN3E"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const wishesRef = ref(db, "loy_krathong_wishes");
+
+    if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+      isSupported().then(supported => {
+        if (supported) getAnalytics(app);
+      }).catch(() => {});
+    }
+
+    function svgToDataUri(svgString) {
+      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString.trim());
+    }
+
+    const CANDLE_AND_INCENSE_CRAFT = `
+      <defs>
+        <radialGradient id="flameAura" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#fffdf9" stop-opacity="0.95"/>
+          <stop offset="40%" stop-color="#ffd54f" stop-opacity="0.58"/>
+          <stop offset="100%" stop-color="#ff8f00" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="waxBody" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#f3dfc8"/>
+          <stop offset="42%" stop-color="#fffdf9"/>
+          <stop offset="78%" stop-color="#f9ead8"/>
+          <stop offset="100%" stop-color="#dfc0a1"/>
+        </linearGradient>
+        <linearGradient id="flameOuter" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#fff59d"/>
+          <stop offset="55%" stop-color="#ffb300"/>
+          <stop offset="100%" stop-color="#ff6f00"/>
+        </linearGradient>
+      </defs>
+
+      <circle cx="100" cy="31" r="24" fill="url(#flameAura)"/>
+
+      <line x1="92" y1="78" x2="85" y2="25" stroke="#c88d58" stroke-width="2.1" stroke-linecap="round"/>
+      <line x1="100" y1="78" x2="100" y2="19" stroke="#c88d58" stroke-width="2.1" stroke-linecap="round"/>
+      <line x1="108" y1="78" x2="115" y2="25" stroke="#c88d58" stroke-width="2.1" stroke-linecap="round"/>
+      <circle cx="85" cy="25" r="2.5" fill="#ff7043"/>
+      <circle cx="100" cy="19" r="2.5" fill="#ff7043"/>
+      <circle cx="115" cy="25" r="2.5" fill="#ff7043"/>
+      <path d="M85 22 C80 14, 87 9, 83 3" stroke="#fffdf9" stroke-width="1.15" stroke-linecap="round" fill="none" opacity="0.5"/>
+      <path d="M100 16 C96 9, 104 6, 100 1" stroke="#fffdf9" stroke-width="1.15" stroke-linecap="round" fill="none" opacity="0.48"/>
+      <path d="M115 22 C120 14, 113 9, 117 3" stroke="#fffdf9" stroke-width="1.15" stroke-linecap="round" fill="none" opacity="0.5"/>
+
+      <rect x="94" y="45" width="12" height="34" rx="4.5" fill="url(#waxBody)" stroke="#d49a89" stroke-width="1.1"/>
+      <path d="M94 52 Q97 56 95 62" stroke="#e8b8a8" stroke-width="1.1" fill="none" opacity="0.75"/>
+      <path d="M106 50 Q103 55 105 63" stroke="#e8b8a8" stroke-width="1.1" fill="none" opacity="0.75"/>
+      <line x1="100" y1="42" x2="100" y2="46" stroke="#4a3540" stroke-width="1.3" stroke-linecap="round"/>
+
+      <path d="M100 19 C108.5 30, 109 40, 100 44.5 C91 40, 91.5 30, 100 19 Z" fill="url(#flameOuter)"/>
+      <path d="M100 26 C104 33.5, 104 39.5, 100 42.5 C96 39.5, 96 33.5, 100 26 Z" fill="#fffdf9"/>
+    `;
+
+    const SVG_BANANA_LEAF = svgToDataUri(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 170">
+        <defs>
+          <linearGradient id="leafBack" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#6ab04c"/>
+            <stop offset="100%" stop-color="#224f24"/>
+          </linearGradient>
+          <linearGradient id="leafMid" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#9be67c"/>
+            <stop offset="55%" stop-color="#4e9e45"/>
+            <stop offset="100%" stop-color="#295d2b"/>
+          </linearGradient>
+          <linearGradient id="leafFront" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ccf5ad"/>
+            <stop offset="48%" stop-color="#6ab855"/>
+            <stop offset="100%" stop-color="#316b32"/>
+          </linearGradient>
+          <linearGradient id="leafBase" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#1e4620"/>
+            <stop offset="25%" stop-color="#3f7d3c"/>
+            <stop offset="50%" stop-color="#6db360"/>
+            <stop offset="75%" stop-color="#3f7d3c"/>
+            <stop offset="100%" stop-color="#1e4620"/>
+          </linearGradient>
+        </defs>
+
+        ${CANDLE_AND_INCENSE_CRAFT}
+
+        <polygon points="62,96 76,56 90,96" fill="url(#leafBack)" stroke="#1b3f1d" stroke-width="1.1"/>
+        <polygon points="86,96 100,51 114,96" fill="url(#leafBack)" stroke="#1b3f1d" stroke-width="1.1"/>
+        <polygon points="110,96 124,56 138,96" fill="url(#leafBack)" stroke="#1b3f1d" stroke-width="1.1"/>
+
+        <polygon points="32,100 47,63 62,100" fill="url(#leafMid)" stroke="#1e4620" stroke-width="1.2"/>
+        <line x1="47" y1="65" x2="47" y2="99" stroke="#d9f9c4" stroke-width="0.8" opacity="0.6"/>
+        <polygon points="52,100 69,56 86,100" fill="url(#leafMid)" stroke="#1e4620" stroke-width="1.2"/>
+        <line x1="69" y1="58" x2="69" y2="99" stroke="#d9f9c4" stroke-width="0.9" opacity="0.65"/>
+        <polygon points="114,100 131,56 148,100" fill="url(#leafMid)" stroke="#1e4620" stroke-width="1.2"/>
+        <line x1="131" y1="58" x2="131" y2="99" stroke="#d9f9c4" stroke-width="0.9" opacity="0.65"/>
+        <polygon points="138,100 153,63 168,100" fill="url(#leafMid)" stroke="#1e4620" stroke-width="1.2"/>
+        <line x1="153" y1="65" x2="153" y2="99" stroke="#d9f9c4" stroke-width="0.8" opacity="0.6"/>
+
+        <polygon points="44,101 58,69 72,101" fill="url(#leafFront)" stroke="#1e4620" stroke-width="1.2"/>
+        <line x1="58" y1="71" x2="58" y2="100" stroke="#fffdf9" stroke-width="0.9" opacity="0.7"/>
+        <polygon points="78,101 100,59 122,101" fill="url(#leafFront)" stroke="#1e4620" stroke-width="1.3"/>
+        <line x1="100" y1="61" x2="100" y2="100" stroke="#fffdf9" stroke-width="1.1" opacity="0.75"/>
+        <polygon points="128,101 142,69 156,101" fill="url(#leafFront)" stroke="#1e4620" stroke-width="1.2"/>
+        <line x1="142" y1="71" x2="142" y2="100" stroke="#fffdf9" stroke-width="0.9" opacity="0.7"/>
+
+        <g transform="translate(46,96)">
+          <circle cx="0" cy="-4" r="2.6" fill="#fffdf9"/><circle cx="3.8" cy="-1.2" r="2.6" fill="#f6dce2"/>
+          <circle cx="2.3" cy="3.2" r="2.6" fill="#fdf6ec"/><circle cx="-2.3" cy="3.2" r="2.6" fill="#fdf6ec"/>
+          <circle cx="-3.8" cy="-1.2" r="2.6" fill="#f6dce2"/><circle cx="0" cy="0" r="2.1" fill="#ffb300"/>
+        </g>
+        <g transform="translate(73,94)">
+          <circle cx="0" cy="-4.5" r="3" fill="#fffdf9"/><circle cx="4.3" cy="-1.4" r="3" fill="#f6dce2"/>
+          <circle cx="2.6" cy="3.6" r="3" fill="#e8b8a8"/><circle cx="-2.6" cy="3.6" r="3" fill="#e8b8a8"/>
+          <circle cx="-4.3" cy="-1.4" r="3" fill="#f6dce2"/><circle cx="0" cy="0" r="2.4" fill="#ffd54f"/>
+        </g>
+        <g transform="translate(100,92)">
+          <circle cx="0" cy="-5.2" r="3.4" fill="#fffdf9"/><circle cx="5" cy="-1.6" r="3.4" fill="#f6dce2"/>
+          <circle cx="3" cy="4.2" r="3.4" fill="#e8b8a8"/><circle cx="-3" cy="4.2" r="3.4" fill="#e8b8a8"/>
+          <circle cx="-5" cy="-1.6" r="3.4" fill="#f6dce2"/><circle cx="0" cy="0" r="2.8" fill="#ffd54f"/>
+        </g>
+        <g transform="translate(127,94)">
+          <circle cx="0" cy="-4.5" r="3" fill="#fffdf9"/><circle cx="4.3" cy="-1.4" r="3" fill="#f6dce2"/>
+          <circle cx="2.6" cy="3.6" r="3" fill="#e8b8a8"/><circle cx="-2.6" cy="3.6" r="3" fill="#e8b8a8"/>
+          <circle cx="-4.3" cy="-1.4" r="3" fill="#f6dce2"/><circle cx="0" cy="0" r="2.4" fill="#ffd54f"/>
+        </g>
+        <g transform="translate(154,96)">
+          <circle cx="0" cy="-4" r="2.6" fill="#fffdf9"/><circle cx="3.8" cy="-1.2" r="2.6" fill="#f6dce2"/>
+          <circle cx="2.3" cy="3.2" r="2.6" fill="#fdf6ec"/><circle cx="-2.3" cy="3.2" r="2.6" fill="#fdf6ec"/>
+          <circle cx="-3.8" cy="-1.2" r="2.6" fill="#f6dce2"/><circle cx="0" cy="0" r="2.1" fill="#ffb300"/>
+        </g>
+
+        <path d="M24 101 L176 101 L159 133 Q100 145 41 133 Z" fill="url(#leafBase)" stroke="#183819" stroke-width="1.5"/>
+        <path d="M29 108 Q100 119 171 108" stroke="#fffdf9" stroke-width="1.3" opacity="0.65" fill="none"/>
+        <path d="M33 116 Q100 128 167 116" stroke="#ffd54f" stroke-width="2.2" stroke-dasharray="6 3.5" fill="none"/>
+        <path d="M38 124 Q100 136 162 124" stroke="#f8bbd0" stroke-width="1.8" stroke-dasharray="3.5 3.5" fill="none"/>
+        <circle cx="100" cy="122" r="3.2" fill="#fffdf9" stroke="#ffb300" stroke-width="1.2"/>
+      </svg>
+    `);
+
+    /* ==========================================================================
+       REFINED NATURAL PINK LOTUS KRATHONG (ทรงบัวหลวงชมพูละมุนสมส่วน)
+       ========================================================================== */
+    const SVG_PINK_LOTUS = svgToDataUri(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 170">
+        <defs>
+          <linearGradient id="lotusOuterPetal" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffd9e6"/>
+            <stop offset="52%" stop-color="#f06292"/>
+            <stop offset="100%" stop-color="#ad1457"/>
+          </linearGradient>
+          <linearGradient id="lotusMidPetal" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffe8f0"/>
+            <stop offset="55%" stop-color="#f48fb1"/>
+            <stop offset="100%" stop-color="#c2185b"/>
+          </linearGradient>
+          <linearGradient id="lotusInnerPetal" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fffdf9"/>
+            <stop offset="58%" stop-color="#f8bbd0"/>
+            <stop offset="100%" stop-color="#d81b60"/>
+          </linearGradient>
+          <linearGradient id="lotusRimBase" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#7c3f4a"/>
+            <stop offset="28%" stop-color="#d49a89"/>
+            <stop offset="50%" stop-color="#f5d0c5"/>
+            <stop offset="72%" stop-color="#d49a89"/>
+            <stop offset="100%" stop-color="#7c3f4a"/>
+          </linearGradient>
+        </defs>
+
+        ${CANDLE_AND_INCENSE_CRAFT}
+
+        <!-- Back Inner Petals (ชั้นในโอบเข้าหากัน) -->
+        <path d="M62 100 C56 68, 74 56, 86 98 Z" fill="url(#lotusInnerPetal)" stroke="#9c1449" stroke-width="1.15"/>
+        <path d="M138 100 C144 68, 126 56, 114 98 Z" fill="url(#lotusInnerPetal)" stroke="#9c1449" stroke-width="1.15"/>
+        <path d="M80 99 C79 58, 121 58, 120 99 Z" fill="url(#lotusInnerPetal)" stroke="#9c1449" stroke-width="1.2"/>
+        <line x1="100" y1="62" x2="100" y2="97" stroke="#f48fb1" stroke-width="0.9" opacity="0.65"/>
+
+        <!-- Mid Lotus Petals (ชั้นกลางเรียงซ้อนเป็นระเบียบ) -->
+        <path d="M40 101 C32 72, 52 58, 72 99 Z" fill="url(#lotusMidPetal)" stroke="#880e4f" stroke-width="1.2"/>
+        <path d="M53 96 Q56 80 58 72" stroke="#fffdf9" stroke-width="0.85" fill="none" opacity="0.65"/>
+
+        <path d="M160 101 C168 72, 148 58, 128 99 Z" fill="url(#lotusMidPetal)" stroke="#880e4f" stroke-width="1.2"/>
+        <path d="M147 96 Q144 80 142 72" stroke="#fffdf9" stroke-width="0.85" fill="none" opacity="0.65"/>
+
+        <!-- Outer Front Lotus Petals (ชั้นนอกโอบรอบฐานกระทงอย่างละมุน) -->
+        <path d="M27 102 C22 80, 38 69, 56 101 Z" fill="url(#lotusOuterPetal)" stroke="#7a0c3c" stroke-width="1.2"/>
+        <path d="M39 99 Q40 87 41 81" stroke="#fffdf9" stroke-width="0.85" fill="none" opacity="0.6"/>
+
+        <path d="M54 102 C51 74, 71 63, 86 101 Z" fill="url(#lotusOuterPetal)" stroke="#7a0c3c" stroke-width="1.2"/>
+        <path d="M70 98 Q71 84 71 76" stroke="#fffdf9" stroke-width="0.85" fill="none" opacity="0.65"/>
+
+        <path d="M146 102 C149 74, 129 63, 114 101 Z" fill="url(#lotusOuterPetal)" stroke="#7a0c3c" stroke-width="1.2"/>
+        <path d="M130 98 Q129 84 129 76" stroke="#fffdf9" stroke-width="0.85" fill="none" opacity="0.65"/>
+
+        <path d="M173 102 C178 80, 162 69, 144 101 Z" fill="url(#lotusOuterPetal)" stroke="#7a0c3c" stroke-width="1.2"/>
+        <path d="M161 99 Q160 87 159 81" stroke="#fffdf9" stroke-width="0.85" fill="none" opacity="0.6"/>
+
+        <!-- Center Golden Lotus Pod & Stamen -->
+        <ellipse cx="100" cy="96" rx="14" ry="4" fill="#ffe082" stroke="#c48777" stroke-width="0.9"/>
+        <circle cx="92" cy="95.5" r="1.4" fill="#fffdf9"/>
+        <circle cx="96" cy="95" r="1.4" fill="#fffdf9"/>
+        <circle cx="100" cy="95" r="1.6" fill="#fffdf9"/>
+        <circle cx="104" cy="95" r="1.4" fill="#fffdf9"/>
+        <circle cx="108" cy="95.5" r="1.4" fill="#fffdf9"/>
+
+        <!-- Clean Balanced Krathong Base -->
+        <path d="M26 102 L174 102 L158 131 Q100 142 42 131 Z" fill="url(#lotusRimBase)" stroke="#63333c" stroke-width="1.4"/>
+        <path d="M31 110 Q100 120 169 110" stroke="#fffdf9" stroke-width="1.35" opacity="0.7" fill="none"/>
+        <path d="M36 120 Q100 130 164 120" stroke="#ffd54f" stroke-width="1.6" stroke-dasharray="5 4" fill="none"/>
+        <circle cx="72" cy="121" r="2.3" fill="#fffdf9"/>
+        <circle cx="100" cy="123" r="3" fill="#ffd54f" stroke="#fffdf9" stroke-width="0.8"/>
+        <circle cx="128" cy="121" r="2.3" fill="#fffdf9"/>
+      </svg>
+    `);
+
+    const SVG_GOLDEN_ROYAL = svgToDataUri(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 170">
+        <defs>
+          <linearGradient id="royalOuter" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffe082"/>
+            <stop offset="55%" stop-color="#ffa000"/>
+            <stop offset="100%" stop-color="#8d4900"/>
+          </linearGradient>
+          <linearGradient id="royalInner" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fffde7"/>
+            <stop offset="45%" stop-color="#ffd54f"/>
+            <stop offset="100%" stop-color="#e65100"/>
+          </linearGradient>
+          <linearGradient id="royalBase" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#7c4200"/>
+            <stop offset="25%" stop-color="#ffb300"/>
+            <stop offset="50%" stop-color="#fff59d"/>
+            <stop offset="75%" stop-color="#ffb300"/>
+            <stop offset="100%" stop-color="#7c4200"/>
+          </linearGradient>
+        </defs>
+
+        ${CANDLE_AND_INCENSE_CRAFT}
+
+        <path d="M26 100 C27 65, 45 58, 59 100 Z" fill="url(#royalOuter)" stroke="#8a4700" stroke-width="1.2"/>
+        <path d="M43 98 L43 69" stroke="#fffdf9" stroke-width="0.9" opacity="0.75"/>
+        <path d="M174 100 C173 65, 155 58, 141 100 Z" fill="url(#royalOuter)" stroke="#8a4700" stroke-width="1.2"/>
+        <path d="M157 98 L157 69" stroke="#fffdf9" stroke-width="0.9" opacity="0.75"/>
+
+        <path d="M49 99 C53 53, 71 48, 84 99 Z" fill="url(#royalInner)" stroke="#9a5200" stroke-width="1.3"/>
+        <path d="M67 97 L67 59" stroke="#fffdf9" stroke-width="1" opacity="0.8"/>
+        <path d="M151 99 C147 53, 129 48, 116 99 Z" fill="url(#royalInner)" stroke="#9a5200" stroke-width="1.3"/>
+        <path d="M133 97 L133 59" stroke="#fffdf9" stroke-width="1" opacity="0.8"/>
+
+        <path d="M76 98 C83 43, 117 43, 124 98 Z" fill="url(#royalInner)" stroke="#9a5200" stroke-width="1.4"/>
+        <path d="M87 96 Q100 66 113 96" stroke="#fffdf9" stroke-width="1" fill="none" opacity="0.75"/>
+        <line x1="100" y1="49" x2="100" y2="96" stroke="#fffdf9" stroke-width="1.2" opacity="0.85"/>
+
+        <circle cx="58" cy="93" r="4.2" fill="#f8bbd0" stroke="#fffdf9" stroke-width="1"/>
+        <circle cx="100" cy="90" r="6" fill="#fffdf9" stroke="#ff8f00" stroke-width="1.4"/>
+        <circle cx="100" cy="90" r="2.6" fill="#f48fb1"/>
+        <circle cx="142" cy="93" r="4.2" fill="#f8bbd0" stroke="#fffdf9" stroke-width="1"/>
+
+        <path d="M24 100 L176 100 L158 133 Q100 145 42 133 Z" fill="url(#royalBase)" stroke="#6b3800" stroke-width="1.5"/>
+        <path d="M30 109 Q100 121 170 109" stroke="#fffdf9" stroke-width="1.8" stroke-dasharray="6 3" fill="none"/>
+        <path d="M36 120 Q100 132 164 120" stroke="#f8bbd0" stroke-width="1.6" fill="none" opacity="0.9"/>
+        <circle cx="72" cy="121" r="2.4" fill="#fffdf9"/>
+        <circle cx="100" cy="123" r="3.2" fill="#fffdf9"/>
+        <circle cx="128" cy="121" r="2.4" fill="#fffdf9"/>
+      </svg>
+    `);
+
+    const SVG_SKY_LANTERN = svgToDataUri(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 82">
+        <defs>
+          <radialGradient id="lanGlow" cx="50%" cy="55%" r="52%">
+            <stop offset="0%" stop-color="#fffdf9"/>
+            <stop offset="55%" stop-color="#ffd54f"/>
+            <stop offset="100%" stop-color="#e89a78"/>
+          </radialGradient>
+        </defs>
+        <path d="M12 14 C12 5, 48 5, 48 14 L42 64 C42 69, 18 69, 18 64 Z" fill="url(#lanGlow)" stroke="#d49a89" stroke-width="1.5"/>
+        <path d="M22 10 L21 66" stroke="#fffdf9" stroke-width="1" opacity="0.65"/>
+        <path d="M30 9 L30 67" stroke="#fffdf9" stroke-width="1" opacity="0.65"/>
+        <path d="M38 10 L39 66" stroke="#fffdf9" stroke-width="1" opacity="0.65"/>
+        <ellipse cx="30" cy="65" rx="11" ry="3.2" fill="#8d5546"/>
+        <circle cx="30" cy="62" r="3" fill="#fffdf9"/>
+      </svg>
+    `);
+
+    const KRATHONG_CONFIGS = {
+      banana_leaf: { name: 'กระทงกลีบผกาใบตองมรกต', svg: SVG_BANANA_LEAF },
+      pink_lotus: { name: 'กระทงบัวหลวงชมพูสวรรค์', svg: SVG_PINK_LOTUS },
+      golden_royal: { name: 'กระทงประทีปทองคำรจนา', svg: SVG_GOLDEN_ROYAL }
+    };
+
+    const STORAGE_KEY = 'loy_krathong_wishes_box_kaem';
+
+    const DEFAULT_WISHES = [
+      {
+        id: 'k_init_1',
+        style: 'banana_leaf',
+        sender: 'กล่อง',
+        text: 'ขอให้คืนลอยกระทงนี้ และทุกวันที่ ๑๙ ของเราสองคน มีแต่ความอบอุ่นและรอยยิ้ม ขอบคุณที่อยู่เคียงข้างกันเสมอมานะแก้ม',
+        timestamp: new Date().toISOString()
+      },
+      {
+        id: 'k_init_2',
+        style: 'pink_lotus',
+        sender: 'แก้ม',
+        text: 'ขอให้ความรักของเราสองคนงดงามและเบ่งบานดั่งดอกบัวหลวง จับมือข้ามผ่านทุกอุปสรรคไปด้วยกันนะกล่อง',
+        timestamp: new Date(Date.now() - 3600000).toISOString()
+      },
+      {
+        id: 'k_init_3',
+        style: 'golden_royal',
+        sender: 'แม่นาง',
+        text: 'ขอให้สายน้ำพัดพาความเหนื่อยล้าออกไป ให้แสงเทียนนำทางความผูกพันของเราให้สว่างไสวตลอดไป',
+        timestamp: new Date(Date.now() - 7200000).toISOString()
+      }
+    ];
+
+    let currentStyle = 'banana_leaf';
+    let currentSender = 'กล่อง';
+    let floatingKrathongs = [];
+    let savedWishes = [];
+    let activeModalWishId = null;
+    let hasReceivedCloudSnapshot = false;
+
+    const sceneContainer = document.getElementById('sceneContainer');
+    const starField = document.getElementById('starField');
+    const creatorCard = document.getElementById('creatorCard');
+    const reopenCreatorFab = document.getElementById('reopenCreatorFab');
+    const previewKrathongImg = document.getElementById('previewKrathongImg');
+    const styleTabBtns = document.querySelectorAll('.style-tab-btn');
+    const senderBtns = document.querySelectorAll('.sender-btn');
+    const wishInput = document.getElementById('wishInput');
+    const presetChips = document.querySelectorAll('.preset-chip');
+    const launchBtn = document.getElementById('launchBtn');
+    const toastNotification = document.getElementById('toastNotification');
+    const audioToggleBtn = document.getElementById('audioToggleBtn');
+    const audioLabel = document.getElementById('audioLabel');
+    const historyToggleBtn = document.getElementById('historyToggleBtn');
+    const wishCountBadge = document.getElementById('wishCountBadge');
+    
+    const messageModalBackdrop = document.getElementById('messageModalBackdrop');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const closeModalActionBtn = document.getElementById('closeModalActionBtn');
+    const modalKrathongImg = document.getElementById('modalKrathongImg');
+    const modalSenderBadge = document.getElementById('modalSenderBadge');
+    const modalDateText = document.getElementById('modalDateText');
+    const modalWishContent = document.getElementById('modalWishContent');
+    const sendLoveReactionBtn = document.getElementById('sendLoveReactionBtn');
+
+    const archiveDrawer = document.getElementById('archiveDrawer');
+    const archiveCloseBtn = document.getElementById('archiveCloseBtn');
+    const clearAllWishesBtn = document.getElementById('clearAllWishesBtn');
+    const archiveList = document.getElementById('archiveList');
+
+    previewKrathongImg.src = KRATHONG_CONFIGS[currentStyle].svg;
+
+    function initStars() {
+      const count = 45;
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 2.2 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.top = `${Math.random() * 44}%`;
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.animationDelay = `${Math.random() * 4}s`;
+        star.style.animationDuration = `${Math.random() * 2 + 2.5}s`;
+        starField.appendChild(star);
+      }
+    }
+
+    function spawnSkyLantern() {
+      const lantern = document.createElement('div');
+      lantern.className = 'sky-lantern';
+      const img = document.createElement('img');
+      img.src = SVG_SKY_LANTERN;
+      img.alt = 'โคมลอย';
+      lantern.appendChild(img);
+
+      const startX = Math.random() * 84 + 6;
+      lantern.style.left = `${startX}%`;
+      const duration = Math.random() * 8 + 18;
+      lantern.style.animationDuration = `${duration}s`;
+
+      sceneContainer.appendChild(lantern);
+      setTimeout(() => {
+        if (lantern.parentNode) lantern.parentNode.removeChild(lantern);
+      }, duration * 1000);
+    }
+
+    setInterval(() => {
+      if (document.visibilityState === 'visible') spawnSkyLantern();
+    }, 4800);
+    for (let i = 0; i < 3; i++) {
+      setTimeout(spawnSkyLantern, i * 1400);
+    }
+
+    styleTabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        styleTabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentStyle = btn.dataset.style;
+        previewKrathongImg.src = KRATHONG_CONFIGS[currentStyle].svg;
+      });
+    });
+
+    senderBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        senderBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentSender = btn.dataset.sender;
+      });
+    });
+
+    presetChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        wishInput.value = chip.dataset.text;
+      });
+    });
+
+    launchBtn.addEventListener('click', () => {
+      let wishText = wishInput.value.trim();
+      if (!wishText) {
+        wishText = 'ขอให้ความรักของเราสว่างไสวดั่งแสงเทียน สุขใจในทุกวันที่ ๑๙ และตลอดไป';
+      }
+
+      const wishItem = {
+        id: 'k_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+        style: currentStyle,
+        sender: currentSender,
+        text: wishText,
+        timestamp: new Date().toISOString()
+      };
+
+      upsertWishLocal(wishItem, true);
+      saveWishesToStorage();
+      set(ref(db, `loy_krathong_wishes/${wishItem.id}`), wishItem).catch(() => {});
+
+      playChime();
+
+      creatorCard.classList.add('dismissed');
+      setTimeout(() => {
+        reopenCreatorFab.classList.add('visible');
+      }, 450);
+
+      showToast(`กระทงของ ${currentSender} ลอยสู่สายน้ำแล้ว`);
+      for (let i = 0; i < 3; i++) {
+        setTimeout(spawnSkyLantern, i * 550);
+      }
+
+      wishInput.value = '';
+    });
+
+    reopenCreatorFab.addEventListener('click', () => {
+      creatorCard.classList.remove('dismissed');
+      reopenCreatorFab.classList.remove('visible');
+    });
+
+    function showToast(msg) {
+      toastNotification.querySelector('span').textContent = msg;
+      toastNotification.classList.add('show');
+      setTimeout(() => {
+        toastNotification.classList.remove('show');
+      }, 3600);
+    }
+
+    function upsertWishLocal(wishItem, isNewLaunch) {
+      const existingIdx = savedWishes.findIndex(w => w.id === wishItem.id);
+      if (existingIdx !== -1) {
+        savedWishes[existingIdx] = wishItem;
+      } else {
+        savedWishes.unshift(wishItem);
+      }
+      savedWishes.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+      updateWishCountBadge();
+      if (archiveDrawer.classList.contains('open')) renderArchiveList();
+      if (activeModalWishId === wishItem.id) openMessageModal(wishItem.id);
+
+      if (floatingKrathongs.length < 14 || isNewLaunch) {
+        createFloatingKrathong(wishItem, isNewLaunch);
+      }
+    }
+
+    function createFloatingKrathong(data, isNewLaunch) {
+      if (floatingKrathongs.some(k => k.id === data.id)) return;
+
+      const el = document.createElement('div');
+      el.className = 'floating-krathong';
+      el.dataset.wishId = data.id;
+
+      const winH = window.innerHeight;
+      const winW = window.innerWidth;
+      const riverStartTop = winH * 0.56;
+      const riverSpan = winH * 0.30;
+
+      const posX = isNewLaunch
+        ? Math.max(20, winW * 0.5 - 65)
+        : (Math.random() * Math.max(120, winW - 150) + 15);
+      const posY = isNewLaunch
+        ? (riverStartTop + riverSpan * 0.62)
+        : (riverStartTop + Math.random() * riverSpan);
+
+      const depthFactor = Math.max(0, Math.min(1, (posY - riverStartTop) / riverSpan));
+      const baseWidth = 102 + depthFactor * 54;
+      const baseHeight = baseWidth * 0.85;
+
+      el.style.width = `${baseWidth}px`;
+      el.style.height = `${baseHeight}px`;
+      el.style.left = `${posX}px`;
+      el.style.top = `${posY}px`;
+      el.style.zIndex = Math.round(10 + depthFactor * 12);
+
+      const cfg = KRATHONG_CONFIGS[data.style] || KRATHONG_CONFIGS.banana_leaf;
+
+      const ripple1 = document.createElement('div');
+      ripple1.className = 'krathong-ripple-ring';
+      const ripple2 = document.createElement('div');
+      ripple2.className = 'krathong-ripple-ring r2';
+
+      const reflection = document.createElement('div');
+      reflection.className = 'krathong-reflection';
+      const reflImg = document.createElement('img');
+      reflImg.src = cfg.svg;
+      reflImg.alt = '';
+      reflection.appendChild(reflImg);
+
+      const artBox = document.createElement('div');
+      artBox.className = 'krathong-art-box';
+      artBox.style.animationDelay = `${(-Math.random() * 4).toFixed(2)}s`;
+      const halo = document.createElement('div');
+      halo.className = 'candle-halo';
+      const mainImg = document.createElement('img');
+      mainImg.src = cfg.svg;
+      mainImg.alt = cfg.name;
+      artBox.appendChild(halo);
+      artBox.appendChild(mainImg);
+
+      const senderTag = document.createElement('div');
+      senderTag.className = 'krathong-sender-tag';
+      senderTag.textContent = `จาก ${data.sender}`;
+
+      el.appendChild(ripple1);
+      el.appendChild(ripple2);
+      el.appendChild(reflection);
+      el.appendChild(artBox);
+      el.appendChild(senderTag);
+
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openMessageModal(data.id);
+      });
+
+      sceneContainer.appendChild(el);
+
+      floatingKrathongs.push({
+        id: data.id,
+        element: el,
+        x: posX,
+        vx: -(12 + Math.random() * 10),
+        bobPhase: Math.random() * Math.PI * 2,
+        baseY: posY,
+        width: baseWidth
+      });
+
+      if (isNewLaunch) {
+        el.style.transition = 'transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)';
+        el.style.transform = 'scale(0.45)';
+        requestAnimationFrame(() => {
+          el.style.transform = 'scale(1)';
+        });
+      }
+    }
+
+    function removeFloatingKrathong(wishId) {
+      const idx = floatingKrathongs.findIndex(k => k.id === wishId);
+      if (idx !== -1) {
+        const [removed] = floatingKrathongs.splice(idx, 1);
+        if (removed.element && removed.element.parentNode) {
+          removed.element.parentNode.removeChild(removed.element);
+        }
+      }
+    }
+
+    function clearAllFloatingKrathongs() {
+      floatingKrathongs.forEach(k => {
+        if (k.element && k.element.parentNode) {
+          k.element.parentNode.removeChild(k.element);
+        }
+      });
+      floatingKrathongs = [];
+    }
+
+    let lastTime = performance.now();
+    function updateRiverPhysics(now) {
+      const dt = Math.min((now - lastTime) / 1000, 0.1);
+      lastTime = now;
+
+      const screenWidth = window.innerWidth;
+      const riverStartTop = window.innerHeight * 0.56;
+      const riverSpan = window.innerHeight * 0.30;
+
+      for (let i = 0; i < floatingKrathongs.length; i++) {
+        const k = floatingKrathongs[i];
+        k.x += k.vx * dt;
+        k.bobPhase += dt * 1.8;
+
+        if (k.x < -k.width - 30) {
+          k.x = screenWidth + 20 + Math.random() * 40;
+          k.baseY = riverStartTop + Math.random() * riverSpan;
+        }
+
+        const currentY = k.baseY + Math.sin(k.bobPhase) * 3.5;
+        k.element.style.left = `${k.x.toFixed(1)}px`;
+        k.element.style.top = `${currentY.toFixed(1)}px`;
+      }
+
+      requestAnimationFrame(updateRiverPhysics);
+    }
+    requestAnimationFrame(updateRiverPhysics);
+
+    function openMessageModal(wishId) {
+      const data = savedWishes.find(w => w.id === wishId);
+      if (!data) return;
+
+      activeModalWishId = data.id;
+      const cfg = KRATHONG_CONFIGS[data.style] || KRATHONG_CONFIGS.banana_leaf;
+      modalKrathongImg.src = cfg.svg;
+      modalSenderBadge.textContent = `จาก ${data.sender}`;
+      
+      const dateObj = new Date(data.timestamp);
+      const thaiMonths = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+      const thaiYear = dateObj.getFullYear() + 543;
+      const formattedDate = `${dateObj.getDate()} ${thaiMonths[dateObj.getMonth()]} ${thaiYear} • ${String(dateObj.getHours()).padStart(2, '0')}:${String(dateObj.getMinutes()).padStart(2, '0')} น.`;
+      modalDateText.textContent = formattedDate;
+
+      modalWishContent.textContent = `"${data.text}"`;
+      messageModalBackdrop.classList.add('open');
+    }
+
+    function closeModal() {
+      messageModalBackdrop.classList.remove('open');
+      activeModalWishId = null;
+    }
+
+    modalCloseBtn.addEventListener('click', closeModal);
+    closeModalActionBtn.addEventListener('click', closeModal);
+    messageModalBackdrop.addEventListener('click', (e) => {
+      if (e.target === messageModalBackdrop) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+        archiveDrawer.classList.remove('open');
+      }
+    });
+
+    sendLoveReactionBtn.addEventListener('click', () => {
+      playChime();
+      for (let i = 0; i < 7; i++) {
+        setTimeout(spawnLoveSparkle, i * 120);
+      }
+    });
+
+    function spawnLoveSparkle() {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'floating-sparkle-heart';
+      sparkle.innerHTML = `
+        <svg viewBox="0 0 24 24" width="22" height="22" style="fill: #ff6b81; filter: drop-shadow(0 2px 8px rgba(255, 107, 129, 0.7));">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      `;
+
+      const rect = modalKrathongImg.getBoundingClientRect();
+      const posX = rect.left + rect.width * 0.5 + (Math.random() * 80 - 40);
+      const posY = rect.top + rect.height * 0.5 + (Math.random() * 40 - 20);
+
+      sparkle.style.left = `${posX}px`;
+      sparkle.style.top = `${posY}px`;
+      document.body.appendChild(sparkle);
+
+      setTimeout(() => {
+        if (sparkle.parentNode) sparkle.parentNode.removeChild(sparkle);
+      }, 2500);
+    }
+
+    function saveWishesToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(savedWishes));
+      } catch (e) {}
+    }
+
+    function deleteWishById(wishId) {
+      savedWishes = savedWishes.filter(item => item.id !== wishId);
+      saveWishesToStorage();
+      removeFloatingKrathong(wishId);
+      if (activeModalWishId === wishId) {
+        closeModal();
+      }
+      updateWishCountBadge();
+      renderArchiveList();
+      showToast('ลบความทรงจำกระทงเรียบร้อยแล้ว');
+      remove(ref(db, `loy_krathong_wishes/${wishId}`)).catch(() => {});
+    }
+
+    clearAllWishesBtn.addEventListener('click', () => {
+      if (savedWishes.length === 0) return;
+      savedWishes = [];
+      saveWishesToStorage();
+      clearAllFloatingKrathongs();
+      closeModal();
+      updateWishCountBadge();
+      renderArchiveList();
+      showToast('ล้างความทรงจำทั้งหมดเรียบร้อยแล้ว');
+      remove(wishesRef).catch(() => {});
+    });
+
+    function syncRiverWithWishes() {
+      const validIds = new Set(savedWishes.slice(0, 12).map(w => w.id));
+      floatingKrathongs.forEach(k => {
+        if (!validIds.has(k.id)) removeFloatingKrathong(k.id);
+      });
+      savedWishes.slice(0, 12).forEach(item => {
+        createFloatingKrathong(item, false);
+      });
+    }
+
+    function loadWishesFromStorage() {
+      let hasStoredData = false;
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored !== null) {
+          hasStoredData = true;
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) savedWishes = parsed;
+        }
+      } catch (e) {}
+
+      if (!hasStoredData) {
+        savedWishes = DEFAULT_WISHES.map(w => ({ ...w }));
+        saveWishesToStorage();
+      }
+
+      updateWishCountBadge();
+      syncRiverWithWishes();
+    }
+
+    function initFirebaseRealtimeSync() {
+      onValue(wishesRef, (snapshot) => {
+        const val = snapshot.val();
+        if (!hasReceivedCloudSnapshot) {
+          hasReceivedCloudSnapshot = true;
+          if (!val) {
+            savedWishes.forEach(item => {
+              set(ref(db, `loy_krathong_wishes/${item.id}`), item).catch(() => {});
+            });
+            return;
+          }
+        }
+
+        const cloudList = val
+          ? Object.values(val).filter(item => item && typeof item === 'object' && item.id)
+          : [];
+
+        cloudList.sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
+        savedWishes = cloudList;
+        saveWishesToStorage();
+        updateWishCountBadge();
+        syncRiverWithWishes();
+
+        if (activeModalWishId && !savedWishes.some(w => w.id === activeModalWishId)) {
+          closeModal();
+        }
+        if (archiveDrawer.classList.contains('open')) {
+          renderArchiveList();
+        }
+      }, () => {});
+    }
+
+    function updateWishCountBadge() {
+      wishCountBadge.textContent = savedWishes.length;
+      clearAllWishesBtn.disabled = savedWishes.length === 0;
+    }
+
+    historyToggleBtn.addEventListener('click', () => {
+      renderArchiveList();
+      archiveDrawer.classList.add('open');
+    });
+    archiveCloseBtn.addEventListener('click', () => {
+      archiveDrawer.classList.remove('open');
+    });
+
+    function renderArchiveList() {
+      archiveList.innerHTML = '';
+      if (savedWishes.length === 0) {
+        const emptyEl = document.createElement('div');
+        emptyEl.className = 'archive-empty';
+        emptyEl.textContent = 'ยังไม่มีความทรงจำในตอนนี้ ลองสร้างกระทงใหม่เพื่อเขียนคำอธิษฐานถึงกันดูนะครับ';
+        archiveList.appendChild(emptyEl);
+        return;
+      }
+
+      const thaiMonths = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+      savedWishes.forEach(item => {
+        const dateObj = new Date(item.timestamp);
+        const timeStr = `${dateObj.getDate()} ${thaiMonths[dateObj.getMonth()]} • ${String(dateObj.getHours()).padStart(2, '0')}:${String(dateObj.getMinutes()).padStart(2, '0')}`;
+        
+        const card = document.createElement('div');
+        card.className = 'archive-item';
+
+        const bodyEl = document.createElement('div');
+        bodyEl.className = 'archive-item-body';
+
+        const topRow = document.createElement('div');
+        topRow.className = 'archive-item-top';
+
+        const senderSpan = document.createElement('span');
+        senderSpan.className = 'archive-item-sender';
+        senderSpan.textContent = `จาก ${item.sender}`;
+
+        const timeSpan = document.createElement('span');
+        timeSpan.className = 'archive-item-time';
+        timeSpan.textContent = timeStr;
+
+        const textDiv = document.createElement('div');
+        textDiv.className = 'archive-item-text';
+        textDiv.textContent = `"${item.text}"`;
+
+        topRow.appendChild(senderSpan);
+        topRow.appendChild(timeSpan);
+        bodyEl.appendChild(topRow);
+        bodyEl.appendChild(textDiv);
+        bodyEl.addEventListener('click', () => {
+          archiveDrawer.classList.remove('open');
+          openMessageModal(item.id);
+        });
+
+        const footerEl = document.createElement('div');
+        footerEl.className = 'archive-item-footer';
+
+        const delBtn = document.createElement('button');
+        delBtn.type = 'button';
+        delBtn.className = 'delete-wish-btn';
+        delBtn.textContent = 'ลบความทรงจำ';
+        delBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          deleteWishById(item.id);
+        });
+
+        footerEl.appendChild(delBtn);
+        card.appendChild(bodyEl);
+        card.appendChild(footerEl);
+        archiveList.appendChild(card);
+      });
+    }
+
+    let audioCtx = null;
+    let isMusicPlaying = false;
+    let musicInterval = null;
+    let waterNoiseNode = null;
+
+    const G4 = 392.00, A4 = 440.00;
+    const C5 = 523.25, D5 = 587.33, E5 = 659.25, G5 = 783.99, A5 = 880.00;
+
+    const THAI_LOY_KRATHONG_MELODY = [
+      { f: G4, d: 0.35 }, { f: A4, d: 0.35 }, { f: C5, d: 0.4 }, { f: D5, d: 0.4 },
+      { f: E5, d: 0.75 }, { f: D5, d: 0.35 }, { f: C5, d: 0.35 }, { f: D5, d: 0.75 },
+      { f: C5, d: 0.35 }, { f: D5, d: 0.35 }, { f: E5, d: 0.4 }, { f: G5, d: 0.4 },
+      { f: A5, d: 0.75 }, { f: G5, d: 0.35 }, { f: E5, d: 0.35 }, { f: D5, d: 0.35 }, { f: C5, d: 0.75 },
+      { f: E5, d: 0.35 }, { f: E5, d: 0.35 }, { f: E5, d: 0.75 },
+      { f: D5, d: 0.35 }, { f: C5, d: 0.35 }, { f: D5, d: 0.75 },
+      { f: E5, d: 0.35 }, { f: E5, d: 0.35 }, { f: E5, d: 0.75 },
+      { f: D5, d: 0.35 }, { f: C5, d: 0.35 }, { f: D5, d: 0.75 },
+      { f: C5, d: 0.35 }, { f: D5, d: 0.35 }, { f: E5, d: 0.4 }, { f: G5, d: 0.4 },
+      { f: A5, d: 0.75 }, { f: G5, d: 0.35 }, { f: E5, d: 0.35 }, { f: D5, d: 0.35 }, { f: C5, d: 0.75 },
+      { f: G4, d: 0.35 }, { f: A4, d: 0.35 }, { f: C5, d: 0.75 },
+      { f: D5, d: 0.35 }, { f: E5, d: 0.35 }, { f: D5, d: 0.75 },
+      { f: G4, d: 0.35 }, { f: A4, d: 0.35 }, { f: C5, d: 0.75 },
+      { f: D5, d: 0.35 }, { f: E5, d: 0.35 }, { f: C5, d: 0.75 },
+      { f: E5, d: 0.35 }, { f: D5, d: 0.35 }, { f: C5, d: 0.35 }, { f: A4, d: 0.35 }, { f: G4, d: 0.75 },
+      { f: A4, d: 0.35 }, { f: C5, d: 0.35 }, { f: D5, d: 0.35 }, { f: E5, d: 0.35 }, { f: C5, d: 1.1 }
+    ];
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playRanatNote(freq, dur) {
+      if (!audioCtx || !isMusicPlaying) return;
+
+      const now = audioCtx.currentTime;
+      const osc1 = audioCtx.createOscillator();
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(freq, now);
+
+      const osc2 = audioCtx.createOscillator();
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(freq * 2.0, now);
+
+      const gain = audioCtx.createGain();
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.linearRampToValueAtTime(0.16, now + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + dur * 1.3);
+
+      osc1.connect(gain);
+      osc2.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc1.start(now);
+      osc2.start(now);
+      osc1.stop(now + dur * 1.4);
+      osc2.stop(now + dur * 1.4);
+    }
+
+    function startWaterAmbience() {
+      if (!audioCtx || waterNoiseNode) return;
+      const bufferSize = audioCtx.sampleRate * 2;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      let lastOut = 0.0;
+      for (let i = 0; i < bufferSize; i++) {
+        const white = Math.random() * 2 - 1;
+        data[i] = (lastOut + (0.02 * white)) / 1.02;
+        lastOut = data[i];
+      }
+
+      waterNoiseNode = audioCtx.createBufferSource();
+      waterNoiseNode.buffer = buffer;
+      waterNoiseNode.loop = true;
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(420, audioCtx.currentTime);
+
+      const gain = audioCtx.createGain();
+      gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+
+      waterNoiseNode.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      waterNoiseNode.start();
+    }
+
+    function playChime() {
+      initAudio();
+      const freqs = [523.25, 659.25, 783.99, 1046.50];
+      freqs.forEach((f, idx) => {
+        setTimeout(() => {
+          if (!audioCtx) return;
+          const now = audioCtx.currentTime;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(f, now);
+          gain.gain.setValueAtTime(0.07, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 1);
+        }, idx * 90);
+      });
+    }
+
+    let currentNoteIndex = 0;
+    function playSongStep() {
+      if (!isMusicPlaying) return;
+      const item = THAI_LOY_KRATHONG_MELODY[currentNoteIndex];
+      playRanatNote(item.f, item.d);
+      currentNoteIndex = (currentNoteIndex + 1) % THAI_LOY_KRATHONG_MELODY.length;
+      musicInterval = setTimeout(playSongStep, item.d * 1000);
+    }
+
+    audioToggleBtn.addEventListener('click', () => {
+      initAudio();
+      if (!isMusicPlaying) {
+        isMusicPlaying = true;
+        audioToggleBtn.classList.add('playing');
+        audioLabel.textContent = 'ปิดเสียงเพลง';
+        startWaterAmbience();
+        currentNoteIndex = 0;
+        playSongStep();
+      } else {
+        isMusicPlaying = false;
+        audioToggleBtn.classList.remove('playing');
+        audioLabel.textContent = 'เปิดเพลงลอยกระทง';
+        clearTimeout(musicInterval);
+        if (waterNoiseNode) {
+          try { waterNoiseNode.stop(); } catch (e) {}
+          waterNoiseNode = null;
+        }
+      }
+    });
+
+    initStars();
+    loadWishesFromStorage();
+    initFirebaseRealtimeSync();
+  </script>
+</body>
+</html>
